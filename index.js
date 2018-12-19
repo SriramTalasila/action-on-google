@@ -33,7 +33,7 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 const app = dialogflow({ debug: true });
 
 app.intent('Default Welcome Intent', (conv) => {
-    conv.ask("Hi, Welcome to valiant 2k18 how can i help you?");
+    conv.close("Hi, Welcome to valiant 2k18 how can i help you?");
 });
 
 
@@ -53,8 +53,8 @@ app.intent('depteventsinfo', (conv, params) => {
                 }),
             }));
         }
-        conv.ask("Here is the list of " + params.department_info + " department events");
-        conv.ask(new BrowseCarousel({
+        conv.close("Here is the list of " + params.department_info + " department events");
+        conv.close(new BrowseCarousel({
             items: it,
         }));
     });
@@ -67,10 +67,10 @@ app.intent('Regfee', (conv, params) => {
     var ref = db.ref("Departments/" + event);
     ref.on('value', function (snapshot) {
         if (snapshot.val().regfee) {
-            conv.ask('Registration fee for ' + snapshot.val().name + " is " + snapshot.val().regfee + " Rupees");
+            conv.close('Registration fee for ' + snapshot.val().name + " is " + snapshot.val().regfee + " Rupees");
         }
         else {
-            conv.ask("Sorry, we don't have information.\n Please contact student Co-ordinator");
+            conv.close("Sorry, we don't have information.\n Please contact student Co-ordinator");
         }
     });
 });
@@ -80,8 +80,8 @@ app.intent('aboutEvents', (conv, params) => {
     var ref = db.ref("Departments/" + params.event_info);
     ref.on('value', function (snapshot) {
         var ob = snapshot.val();
-        conv.ask("Here is details about the event");
-        conv.ask(new BasicCard({
+        conv.close("Here is details about the event");
+        conv.close(new BasicCard({
             text: ob.description,
             title: ob.name,
             buttons: new Button({
@@ -102,7 +102,7 @@ app.intent('spot', (conv, params) => {
     var event = params.event_info;
     var ref = db.ref("Departments/" + event);
     ref.on('value', function (snapshot) {
-        conv.ask('Spot registrations are ' + snapshot.val().spot + ' ' + snapshot.val().name);
+        conv.close('Spot registrations are ' + snapshot.val().spot + ' ' + snapshot.val().name);
     });
 });
 
@@ -112,8 +112,8 @@ app.intent('RegisterMe', (conv, params) => {
     var ref = db.ref("Departments/" + event);
     ref.on('value', function (snapshot) {
         if (snapshot.val().reglink) {
-            conv.ask("You can register using the link ");
-            conv.ask(new BasicCard({
+            conv.close("You can register using the link ");
+            conv.close(new BasicCard({
                 title: snapshot.val().name,
                 image: new Image({
                     url: snapshot.val().image,
@@ -128,7 +128,7 @@ app.intent('RegisterMe', (conv, params) => {
             }));
         }
         else {
-            conv.ask("Sorry, we don't have information.\n Please contact student Co-ordinator");
+            conv.close("Sorry, we don't have information.\n Please contact student Co-ordinator");
         }
     });
 });
@@ -150,7 +150,7 @@ app.intent('Eventcoordinator', (conv, params) => {
             c = "Student Co-ordinator for " + obj.name + " is " + obj.student.name + "and contact is " + t;
 
         }
-        conv.ask(c);
+        conv.close(c);
     });
 });
 
